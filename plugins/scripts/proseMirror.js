@@ -9299,7 +9299,7 @@ style.innerText = "*{\n" +
     "}\n";
 
 
-document.head.appendChild(style)
+//document.head.appendChild(style)
 
 ///////////////////////////////| ProseMirror Library |/////////////////////////////////////////////////
 
@@ -9687,16 +9687,16 @@ const EmojiSpec = {
 
 
 
-const emojiSchema = new Schema({
+const customSchema = new Schema({
     nodes: schema.spec.nodes.addBefore("image", "emoji", EmojiSpec),
     marks: schema.spec.marks
 })
 
 let content = document.querySelector("#content")
-let startDoc = model.DOMParser.fromSchema(emojiSchema).parse(content)
+let startDoc = model.DOMParser.fromSchema(customSchema).parse(content)
 
 
-let emojiType = emojiSchema.nodes.emoji
+let emojiType = customSchema.nodes.emoji
 
 console.log(emojiType.create("🤪"));
 
@@ -9714,7 +9714,7 @@ function insertEmoji(face) {
 
 
 
-let menuBuild = buildMenuItems(emojiSchema)
+let menuBuild = buildMenuItems(customSchema)
 
 emojis.forEach(emojiJSON => {
     menuBuild.insertMenu.content.push(new MenuItem({
@@ -9728,6 +9728,6 @@ emojis.forEach(emojiJSON => {
 window.view = new EditorView(document.querySelector("#editor"), {
     state: EditorState.create({
         doc: startDoc,
-        plugins: exampleSetup({schema: emojiSchema, menuContent: menuBuild.fullMenu})
+        plugins: exampleSetup({schema: customSchema, menuContent: menuBuild.fullMenu})
     })
 })
