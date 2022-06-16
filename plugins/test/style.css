@@ -3,16 +3,12 @@
 }
 .ProseMirror {
     position: relative;
-}
+    padding-left: 10px;
+    width: 500px;
 
-body{
-    height: 300px;
 }
-
 .ProseMirror {
     word-wrap: break-word;
-    white-space: pre-wrap;
-    white-space: break-spaces;
     -webkit-font-variant-ligatures: none;
     font-variant-ligatures: none;
     font-feature-settings: "liga" 0; /* the above doesn't seem to work in Edge */
@@ -86,6 +82,10 @@ img.ProseMirror-separator {
     white-space: nowrap;
 }
 
+.ProseMirror-menu-dropdown-menu{
+    background-color: #3e3e3e;
+}
+
 .ProseMirror-menu-dropdown {
     vertical-align: 1px;
     cursor: pointer;
@@ -120,24 +120,58 @@ img.ProseMirror-separator {
 
 .ProseMirror-menu-dropdown-menu, .ProseMirror-menu-submenu {
     position: absolute;
-    background: white;
-    color: #666;
-    border: 1px solid #aaa;
+    background: #484848;
+    color: #f1f1f1;
+    border: 1px solid #4e4e4e;
     padding: 2px;
+    border-radius: 7px;
 }
 
 .ProseMirror-menu-dropdown-menu {
     z-index: 15;
     min-width: 6em;
+    top: 45px;
+    overflow: visible;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    animation: 300ms open-dropdown ease-in-out;
+}
+
+.ProseMirror-menu-dropdown-menu.scroll{
+    overflow: scroll;
+}
+
+.ProseMirror-menu-dropdown-menu::-webkit-scrollbar {
+    display: none;
+}
+
+@keyframes open-dropdown {
+    from{
+        opacity: 0;
+        transform: translateY(-50%) scale(0.5);
+
+    }
 }
 
 .ProseMirror-menu-dropdown-item {
     cursor: pointer;
     padding: 2px 8px 2px 4px;
+    background-color: #5b5b5b;
+    border-radius: 5px;
+    border: 1px solid #9e9e9e;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 100ms;
+}
+
+.ProseMirror-menu-dropdown-item:last-child{
+    margin-bottom: 0;
 }
 
 .ProseMirror-menu-dropdown-item:hover {
-    background: #f2f2f2;
+    background: #2c2c2c;
 }
 
 .ProseMirror-menu-submenu-wrap {
@@ -158,19 +192,21 @@ img.ProseMirror-separator {
 
 .ProseMirror-menu-submenu {
     display: none;
+    position: absolute;
     min-width: 4em;
+    z-index: 40;
     left: 100%;
     top: -3px;
 }
 
 .ProseMirror-icon.ProseMirror-menu-active {
-    background: rgba(114, 144, 190, 0.47);
-    border: 1px solid rgb(113, 143, 190);
+    background: rgba(121, 121, 121, 0.81);
+    transition-duration: 200ms;
     border-radius: 4px;
 }
 
 .ProseMirror-menu-active svg{
-    color: rgb(143, 173, 211);
+    color: rgb(255, 255, 255);
 }
 
 .ProseMirror-menu-disabled {
@@ -187,7 +223,6 @@ img.ProseMirror-separator {
     min-height: 1em;
     color: #d0d0d0;
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
     padding: 10px 10px;
     gap: 10px;
@@ -288,15 +323,18 @@ img.ProseMirror-separator {
     box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);
     border-radius: 10px;
     color: #d6d6d6;
+
+    animation: 200ms prompt-open ease-in-out;
 }
 
 .ProseMirror-prompt h5 {
 
     font-weight: normal;
-    font-size: 100%;
     color: #e7e7e7;
+    font-size: 20px;
     font-family: sans-serif;
     margin-bottom: 10px;
+    margin-left: 10px;
     margin-top: 10px;
 }
 
@@ -305,11 +343,23 @@ img.ProseMirror-separator {
     background: #494949;
     border: 1px solid #7b7b7b;
     border-radius: 5px;
-    height: 20px;
+    height: 35px;
     margin-bottom: 10px;
+    font-size: 18px;
+    width: 300px;
     outline: none;
     font-family: sans-serif;
     color: #c0c0c0;
+
+}
+
+@keyframes prompt-open {
+
+    from{
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
 }
 
 .ProseMirror-prompt input[type="text"] {
@@ -363,8 +413,6 @@ img.ProseMirror-separator {
 }
 
 .ProseMirror {
-    padding: 4px 8px 4px 14px;
-    line-height: 1.2;
     outline: none;
 }
 
@@ -435,7 +483,7 @@ img.ProseMirror-separator {
 
 
 .menuicon-active{
-    background-color: #337eff;
+    background-color: #727272;
     color: white;
 }
 
@@ -448,8 +496,8 @@ img.ProseMirror-separator {
 .ProseMirror{
     font-family: sans-serif;
     border: 1px solid #3770d7;
-    min-height: 100px;
-    width: 100%;
+    min-height: 250px;
+    width: calc(100% - 15px);
     height: 100%;
     margin-top: 10px;
     border-radius: 10px;
@@ -476,7 +524,6 @@ img.ProseMirror-separator {
     border: none;
     padding: 0;
     overflow: hidden;
-    display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
@@ -487,12 +534,10 @@ img.ProseMirror-separator {
 
 .editor{
     width: 500px;
-    min-height: 300px;
     background-color: white;
     border: 1px solid #cfcfcf;
     border-radius: 10px;
     outline-style: none;
-    padding: 5px;
 }
 
 .editor:focus{
@@ -505,3 +550,35 @@ img.ProseMirror-separator {
     padding: 5px;
     background-color: #cfcfcf;
 }
+
+.bbcode-result{
+    position: relative;
+    border: 1px solid #4094ff;
+    width: calc(100% - 10px);
+    border-radius: 10px;
+    height: 200px;
+    padding: 5px;
+}
+
+.translate-btn{
+    border: 1px solid #5b5b5b;
+    background-color: #2c2c2c;
+    color: #cdcdcd;
+    text-align: center;
+    outline-style: none;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition-duration: 200ms;
+}
+
+.translate-btn:hover{
+    background-color: #3e3e3e;
+}
+
+

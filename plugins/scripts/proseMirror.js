@@ -9306,13 +9306,12 @@ style.innerText = "*{\n" +
 ///////////////////////////////| Plugin |////////////////////////////////////
 
 
-const {commands, view, menu, state, model, keymap, schema_basic} = PM;
+const {commands, view, menu, state, model, keymap, schema_basic,example_setup, schema_list} = PM;
 
 const {Schema} = PM.model;
-const {MenuItem} = PM.menu;
+const {MenuItem, Dropdown, icons} = PM.menu;
 const {buildMenuItems, exampleSetup} = PM.example_setup;
-
-
+const {addListNodes} = PM.schema_list;
 const EditorState = state.EditorState;
 const EditorView = view.EditorView;
 const {schema} = schema_basic;
@@ -9421,309 +9420,240 @@ const emojis = [
         , "unicode_version": "9.0"
         , "ios_version": "10.2"
     }
-    , {
-        "emoji": "😂"
-        , "description": "face with tears of joy"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "joy"
-        ]
-        , "tags": [
-            "tears"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "🙂"
-        , "description": "slightly smiling face"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "slightly_smiling_face"
-        ]
-        , "tags": [
-        ]
-        , "unicode_version": "7.0"
-        , "ios_version": "9.1"
-    }
-    , {
-        "emoji": "🙃"
-        , "description": "upside-down face"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "upside_down_face"
-        ]
-        , "tags": [
-        ]
-        , "unicode_version": "8.0"
-        , "ios_version": "9.1"
-    }
-    , {
-        "emoji": "😉"
-        , "description": "winking face"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "wink"
-        ]
-        , "tags": [
-            "flirt"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "😊"
-        , "description": "smiling face with smiling eyes"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "blush"
-        ]
-        , "tags": [
-            "proud"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "😇"
-        , "description": "smiling face with halo"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "innocent"
-        ]
-        , "tags": [
-            "angel"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "🥰"
-        , "description": "smiling face with hearts"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "smiling_face_with_three_hearts"
-        ]
-        , "tags": [
-            "love"
-        ]
-        , "unicode_version": "11.0"
-        , "ios_version": "12.1"
-    }
-    , {
-        "emoji": "😍"
-        , "description": "smiling face with heart-eyes"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "heart_eyes"
-        ]
-        , "tags": [
-            "love"
-            , "crush"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "🤩"
-        , "description": "star-struck"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "star_struck"
-        ]
-        , "tags": [
-            "eyes"
-        ]
-        , "unicode_version": "11.0"
-        , "ios_version": "12.1"
-    }
-    , {
-        "emoji": "😘"
-        , "description": "face blowing a kiss"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "kissing_heart"
-        ]
-        , "tags": [
-            "flirt"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "😗"
-        , "description": "kissing face"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "kissing"
-        ]
-        , "tags": [
-        ]
-        , "unicode_version": "6.1"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "☺️"
-        , "description": "smiling face"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "relaxed"
-        ]
-        , "tags": [
-            "blush"
-            , "pleased"
-        ]
-        , "unicode_version": ""
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "😚"
-        , "description": "kissing face with closed eyes"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "kissing_closed_eyes"
-        ]
-        , "tags": [
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "😙"
-        , "description": "kissing face with smiling eyes"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "kissing_smiling_eyes"
-        ]
-        , "tags": [
-        ]
-        , "unicode_version": "6.1"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "🥲"
-        , "description": "smiling face with tear"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "smiling_face_with_tear"
-        ]
-        , "tags": [
-        ]
-        , "unicode_version": "13.0"
-        , "ios_version": "14.0"
-    }
-    , {
-        "emoji": "😋"
-        , "description": "face savoring food"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "yum"
-        ]
-        , "tags": [
-            "tongue"
-            , "lick"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "😛"
-        , "description": "face with tongue"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "stuck_out_tongue"
-        ]
-        , "tags": [
-        ]
-        , "unicode_version": "6.1"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "😜"
-        , "description": "winking face with tongue"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "stuck_out_tongue_winking_eye"
-        ]
-        , "tags": [
-            "prank"
-            , "silly"
-        ]
-        , "unicode_version": "6.0"
-        , "ios_version": "6.0"
-    }
-    , {
-        "emoji": "🤪"
-        , "description": "zany face"
-        , "category": "Smileys & Emotion"
-        , "aliases": [
-            "zany_face"
-        ]
-        , "tags": [
-            "goofy"
-            , "wacky"
-        ]
-        , "unicode_version": "11.0"
-        , "ios_version": "12.1"
-    }]
+   ]
 
-//emoji
-const EmojiSpec = {
-    attrs: {type: {default: "🤪"}}, // dynamic values here
-    draggable: true,
-    selectable: false,
-    parseDOM: [{ // how does prosemirror recognize an emoji if its being pasted from clipboard?
-        tag: "p[emoji-type]",
-        getAttrs: (dom) => {
-            console.log(dom.getAttribute("emoji-type"))
-            return {type: dom.getAttribute("emoji-type")}
-        }
-    }],
-    toDOM: (node) =>  {
-        return ["p", node.attrs.type.emoji]
+
+
+let availableAttrs = document.getElementById("editor").attributes;
+
+let styles = availableAttrs["available-style"].nodeValue.split(";");
+
+const nodes = {
+
+    doc: {
+        content: "block+"
     },
+
+    paragraph: {
+        content: "inline*",
+        group: "block",
+        parseDOM: [{tag: "p"}],
+        toDOM() { return ["p", 0] }
+    },
+
+    text: {
+        group: "inline"
+    },
+
+}
+
+if(styles.includes('blockquote')){
+    nodes.blockquote= {
+        content: "block+",
+            group: "block",
+            defining: true,
+            parseDOM: [{tag: "blockquote"}],
+            toDOM() { return  ["blockquote", 0] }
+    }
+}
+if(styles.includes('horizontal-rule')) {
+    nodes.horizontal_rule = {
+        group: "block",
+            parseDOM:[{tag: "hr"}],
+            toDOM(){return ["hr"]}
+    }
+}
+
+if(styles.includes('headings')) {
+    nodes.heading= {
+        attrs: {level: {default: 1}},
+        content: "inline*",
+            group: "block",
+            defining: true,
+            parseDOM: [{tag: "h1", attrs: {level: 1}},
+            {tag: "h2", attrs: {level: 2}},
+            {tag: "h3", attrs: {level: 3}},
+            {tag: "h4", attrs: {level: 4}},
+            {tag: "h5", attrs: {level: 5}},
+            {tag: "h6", attrs: {level: 6}}],
+            toDOM(node) { return ["h" + node.attrs.level, 0] }
+    }
+}
+
+if(styles.includes('code-block')) {
+    nodes.code_block= {
+        content: "text*",
+            marks: "",
+            group: "block",
+            code: true,
+            defining: true,
+            parseDOM: [{tag: "pre", preserveWhitespace: "full"}],
+            toDOM() { return ["pre", ["code", 0]] }
+    }
+}
+
+if(styles.includes('image')) {
+    nodes.image = {
+        inline: true,
+            attrs: {
+            src: {},
+            alt: {default: null},
+            title: {default: null}
+        },
+        group: "inline",
+            draggable: true,
+            parseDOM: [{tag: "img[src]", getAttrs(dom) {
+                return {
+                    src: dom.getAttribute("src"),
+                    title: dom.getAttribute("title"),
+                    alt: dom.getAttribute("alt")
+                }
+            }}],
+            toDOM(node) { let {src, alt, title} = node.attrs; return ["img", {src, alt, title}] }
+    }
+}
+
+if(styles.includes('break')){
+    nodes.hard_break = {
+        inline: true,
+            group: "inline",
+            selectable: false,
+            parseDOM: [{tag: "br"}],
+            toDOM() { return ["br"]}
+    }
+}
+
+if(styles.includes('emoji')){
+    nodes.emoji= {
+        attrs: {type: {default: "🤪"}},
+        inline: true,
+            group: "inline",
+            parseDOM: [{
+            tag: "p[emoji-type]",
+            getAttrs: (dom) => {
+                console.log(dom.getAttribute("emoji-type"))
+                return {type: dom.getAttribute("emoji-type")}
+            }
+        }],
+            toDOM: (node) =>  {
+            return ["p", node.attrs.type.emoji]
+        },
+    }
 }
 
 
 
+const marks = {}
+
+if(styles.includes('bold')){
+    marks.strong = {
+        parseDOM: [{tag: "b"},
+            {tag: "b", getAttrs: (node) => node.style.fontWeight !== "normal" && null},
+            {style: "font-weight", getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null}],
+        toDOM() { return ["b", 0] }
+    }
+}
+
+if(styles.includes('italic')){
+    marks.em = {
+        parseDOM: [{tag: "i"}, {tag: "em"}, {style: "font-style=italic"}],
+            toDOM() { return ["em", 0] }
+    }
+}
+
+if(styles.includes('underline')){
+
+    marks.underline = {
+        parseDOM: [{tag: "u"}, {style: "text-decoration: underline"}],
+            toDOM() { return ["u", 0] }
+    }
+
+}
+
+if(styles.includes('code')){
+    marks.code=  {
+        parseDOM: [{tag: "code"}],
+            toDOM() { return ["code", 0] }
+    }
+
+}
+
+if(styles.includes('link')){
+    marks.link= {
+        attrs: {
+            href: {},
+            title: {default: null}
+        },
+        inclusive: false,
+            parseDOM: [{tag: "a[href]", getAttrs(dom) {
+                return {href: dom.getAttribute("href"), title: dom.getAttribute("title")}
+            }}],
+            toDOM(node) { let {href, title} = node.attrs; return ["a", {href, title}, 0] }
+    }
+}
+
+let baseSchema = new Schema({
+    nodes,
+    marks})
+
 
 const customSchema = new Schema({
-    nodes: schema.spec.nodes.addBefore("image", "emoji", EmojiSpec),
-    marks: schema.spec.marks
-})
+    nodes: addListNodes(baseSchema.spec.nodes, "paragraph block*", "block"),
+    marks})
+
+console.log(customSchema)
+
 
 let content = document.querySelector("#content")
 let startDoc = model.DOMParser.fromSchema(customSchema).parse(content)
 
 
-let emojiType = customSchema.nodes.emoji
-
-console.log(emojiType.create("🤪"));
-
 function insertEmoji(face) {
     return function(state, dispatch) {
+
+        console.log(face)
+
         let {$from} = state.selection, index = $from.index()
-        if (!$from.parent.canReplaceWith(index, index, emojiType))return false
-        if (dispatch)dispatch(state.tr.replaceSelectionWith(emojiType.create(face)))
+        if (!$from.parent.canReplaceWith(index, index, customSchema.nodes.emoji))return false
+        if (dispatch) {
+            let node = customSchema.nodes.emoji.create(face)
+            //dispatch(state.tr.replaceSelectionWith(node))
+        }
+
         return true
     }
 }
 
-//underline
-
-
-
 
 let menuBuild = buildMenuItems(customSchema)
 
-emojis.forEach(emojiJSON => {
-    menuBuild.insertMenu.content.push(new MenuItem({
-        title: "Insert " + emojiJSON.emoji,
-        label: emojiJSON.emoji.charAt(0).toUpperCase() + emojiJSON.emoji.slice(1),
-        enable(state) { return insertEmoji(emojiJSON.emoji)(state) },
-        run: insertEmoji(emojiJSON.emoji)
+function markActive(state, type) {
+    let {from, $from, to, empty} = state.selection
+    if (empty) return !!type.isInSet(state.storedMarks || $from.marks())
+    else return state.doc.rangeHasMark(from, to, type)
+}
+if(styles.includes('underline')) {
+    menuBuild.inlineMenu[0].push(new MenuItem({
+        title: "Souligner",
+        label: "U",
+        class: "ProseMirror-icon",
+        run: commands.toggleMark(customSchema.marks.underline),
+        active: (state) => {
+            return markActive(state, customSchema.marks.underline)
+        }
     }))
-})
+}
+
+if(styles.includes('emoji')){
+    menuBuild.fullMenu[1].push( new Dropdown(
+        emojis.map((emoji) => new MenuItem({
+            label: emoji.emoji,
+            run: insertEmoji(emoji.emoji)
+        })),
+        { label: 'Emojis' }
+    ))
+}
+
 
 window.view = new EditorView(document.querySelector("#editor"), {
     state: EditorState.create({
@@ -9731,3 +9661,65 @@ window.view = new EditorView(document.querySelector("#editor"), {
         plugins: exampleSetup({schema: customSchema, menuContent: menuBuild.fullMenu})
     })
 })
+
+/**
+ * translate from HTML to BBCode
+ *
+ * @param htmlVersion
+ * @returns {string}
+ */
+function translateToBBCode(htmlVersion){
+
+    let r = new RegExp('<img','g')
+    let arrayMatch = htmlVersion.split(r).map(line=>"[img]"+line.split(new RegExp("[\"|\']"))[1]+"[/img]").filter(line=>!line.includes("]undefined["))
+    let arrayMatchBis = htmlVersion.split('<')
+    let i =0
+    for(let y=0;y<arrayMatchBis.length;y++){
+        if(y > 0){
+            arrayMatchBis[y] = "<" + arrayMatchBis[y]
+        }
+        if(arrayMatchBis[y].search(new RegExp('<img.*','g'))>=0){
+            arrayMatchBis[y]=arrayMatch[i]
+            i++
+        }
+    }
+    htmlVersion = arrayMatchBis.join("")
+    htmlVersion = htmlVersion.replaceAll("<","[")
+    htmlVersion = htmlVersion.replaceAll(">","]")
+    htmlVersion = htmlVersion.replaceAll("h1","b")
+    htmlVersion = htmlVersion.replaceAll("h2","b")
+    htmlVersion = htmlVersion.replaceAll("h3","b")
+    htmlVersion = htmlVersion.replaceAll("[a","[url")
+    htmlVersion = htmlVersion.replaceAll("[/a]","[/url]")
+    htmlVersion = htmlVersion.replaceAll("[p]","")
+    htmlVersion = htmlVersion.replaceAll("[/p]","")
+    htmlVersion = htmlVersion.replaceAll("backquote","quote")
+    htmlVersion = htmlVersion.replaceAll("ul","list")
+    htmlVersion = htmlVersion.replaceAll("[li]","[*]")
+    htmlVersion = htmlVersion.replaceAll("[/li]","")
+    htmlVersion = htmlVersion.replaceAll(" href=\"","=")
+    return htmlVersion.replaceAll("\"]", "]")
+}
+
+
+
+
+function applyTranslateActionTo(actionID, action, onTranslate){
+    document.getElementById(actionID).addEventListener(action, () => {
+
+        let content = document.getElementsByClassName("ProseMirror")[0];
+
+        if(content){
+            onTranslate(translateToBBCode(content.innerHTML))
+        }
+
+    })
+}
+
+
+applyTranslateActionTo("translate-btn", "click", (bbCode) => {
+
+    document.getElementById("bbcode_receiver").innerHTML = bbCode;
+
+})
+
