@@ -9525,19 +9525,20 @@ if(styles.includes('break')){
 
 if(styles.includes('emoji')){
     nodes.emoji= {
-        attrs: {type: {default: "🤪"}},
+        attrs: {type: {default: emojis[0]}},
         inline: true,
-            group: "inline",
-            parseDOM: [{
+        group: "inline",
+        draggable: true,
+
+        toDOM: node => ["p", node.attrs.type],
+
+        parseDOM: [{
             tag: "p[emoji-type]",
-            getAttrs: (dom) => {
-                console.log(dom.getAttribute("emoji-type"))
-                return {type: dom.getAttribute("emoji-type")}
+            getAttrs: dom => {
+                let type = dom.getAttribute("emoji-type")
+                return emojis.indexOf(type) > -1 ? {type} : false
             }
-        }],
-            toDOM: (node) =>  {
-            return ["p", node.attrs.type.emoji]
-        },
+        }]
     }
 }
 
@@ -9582,13 +9583,12 @@ if(styles.includes('link')){
     marks.link= {
         attrs: {
             href: {},
-            title: {default: null}
         },
         inclusive: false,
             parseDOM: [{tag: "a[href]", getAttrs(dom) {
-                return {href: dom.getAttribute("href"), title: dom.getAttribute("title")}
+                return {href: dom.getAttribute("href")}
             }}],
-            toDOM(node) { let {href, title} = node.attrs; return ["a", {href, title}, 0] }
+            toDOM(node) { let {href} = node.attrs; return ["a", {href}, 0] }
     }
 }
 
@@ -9598,27 +9598,17 @@ let baseSchema = new Schema({
 
 
 const customSchema = new Schema({
-    nodes: addListNodes(baseSchema.spec.nodes, "paragraph block*", "block"),
+    nodes: addListNodes(baseSchema.spec.nodes, "paragraph block*", "block"), // adding bullet lists
     marks})
 
-console.log(customSchema)
 
 
 let content = document.querySelector("#content")
 let startDoc = model.DOMParser.fromSchema(customSchema).parse(content)
 
 
-function insertEmoji(face) {
-    return function(state, dispatch) {
-
-        console.log(face)
-
-        let {$from} = state.selection, index = $from.index()
-        if (!$from.parent.canReplaceWith(index, index, customSchema.nodes.emoji))return false
-        if (dispatch) {
-            let node = customSchema.nodes.emoji.create(face)
-            //dispatch(state.tr.replaceSelectionWith(node))
-        }
+function insertEmoji(type) {
+    return function (state, dispatch) {
 
         return true
     }
@@ -9633,7 +9623,9 @@ function markActive(state, type) {
     else return state.doc.rangeHasMark(from, to, type)
 }
 if(styles.includes('underline')) {
-    menuBuild.inlineMenu[0].push(new MenuItem({
+
+
+    let menuItem = new MenuItem({
         title: "Souligner",
         label: "U",
         class: "ProseMirror-icon",
@@ -9641,14 +9633,23 @@ if(styles.includes('underline')) {
         active: (state) => {
             return markActive(state, customSchema.marks.underline)
         }
-    }))
+    })
+
+    if( menuBuild.inlineMenu[0].length > 2){
+        menuBuild.inlineMenu[0].splice(2, 0, menuItem)//put next to Italic
+    }else{
+        menuBuild.inlineMenu[0].push(menuItem)
+    }
+
+
+
 }
 
 if(styles.includes('emoji')){
     menuBuild.fullMenu[1].push( new Dropdown(
         emojis.map((emoji) => new MenuItem({
             label: emoji.emoji,
-            run: insertEmoji(emoji.emoji)
+            run: insertEmoji(emoji)
         })),
         { label: 'Emojis' }
     ))
@@ -9716,10 +9717,23 @@ function applyTranslateActionTo(actionID, action, onTranslate){
     })
 }
 
+function colorizeBBcode(bbcodeVanilla){
+
+    console.log( bbcodeVanilla.replace(new RegExp("\[.*\]", "g"), (match) => {
+        //console.log(match)
+        return "<span class='colorize'>"+match+"</span>"
+
+    }))
+
+    return bbcodeVanilla
+
+}
+
+
 
 applyTranslateActionTo("translate-btn", "click", (bbCode) => {
 
-    document.getElementById("bbcode_receiver").innerHTML = bbCode;
+    document.getElementById("bbcode_receiver").innerHTML = colorizeBBcode(bbCode);
 
 })
 
