@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProseMirror - Integration test</title>
+
+    <script src="../../scripts/proseMirror.js" defer></script>
+    <script src="../../scripts/schema.js" defer></script>
+    <script src="../../scripts/menuAddon.js" defer></script>
+    <script src="../../scripts/build.js" defer></script>
+    <script src="../../scripts/functionAddon.js" defer></script>
+    <link rel="stylesheet" href="../../scripts/prosemirror-style.css">
+
+</head>
+<body>
+
+    <div prosemirror-editor="editor_1" prosemirror-theme="dark" prosemirror-available-style="bold;underline;italic;list"></div>
+    <div prosemirror-content-of="editor_1" ></div>
+
+    <div prosemirror-editor="editor_2" prosemirror-theme="light" prosemirror-available-style="bold;underline"></div>
+    <div prosemirror-content-of="editor_2" ></div>
+
+</body>
+</html>
