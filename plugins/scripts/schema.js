@@ -67,7 +67,6 @@ for(let editor of availableEditor){
             }
         }
 
-
         if(styles.includes('image')) {
             nodes.image = {
                 inline: true,
@@ -89,8 +88,6 @@ for(let editor of availableEditor){
             }
         }
 
-
-
         if(styles.includes('break')){
             nodes.hard_break = {
                 inline: true,
@@ -100,9 +97,6 @@ for(let editor of availableEditor){
                 toDOM() { return ["br"]}
             }
         }
-
-
-
 
         if(styles.includes('emoji')){
             nodes.emoji= {
@@ -142,6 +136,8 @@ for(let editor of availableEditor){
 
             }
         }
+
+
 
         //marks = toggle the style of element without parent lost (ex: <p>test</p> -> *apply bold* -> <p><b>test</b></p>)
         const marks = {}
@@ -192,7 +188,6 @@ for(let editor of availableEditor){
             }
         }
 
-
         if(styles.includes('list')){
 
             baseSchema = new Schema({
@@ -215,8 +210,6 @@ for(let editor of availableEditor){
     }else{
 
         //set as default schema if no setup
-
-
         const nodes = {
             doc: {
                 content: "block+"
@@ -244,15 +237,6 @@ for(let editor of availableEditor){
                 group: "block",
                 parseDOM:[{tag: "hr"}],
                 toDOM(){return ["hr"]}
-            },
-            code_block: {
-                content: "text*",
-                marks: "",
-                group: "block",
-                code: true,
-                defining: true,
-                parseDOM: [{tag: "pre", preserveWhitespace: "full"}],
-                toDOM() { return ["pre", ["code", 0]] }
             },
 
 

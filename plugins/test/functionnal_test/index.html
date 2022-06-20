@@ -4,22 +4,21 @@
     <meta charset="UTF-8">
     <title>ProseMirror - Integration test</title>
 
+    <script src="../../scripts/static-data.js" defer></script>
     <script src="../../scripts/proseMirror.js" defer></script>
     <script src="../../scripts/schema.js" defer></script>
     <script src="../../scripts/menuAddon.js" defer></script>
+    <script src="../../scripts/setup.js" defer></script>
     <script src="../../scripts/build.js" defer></script>
     <script src="../../scripts/functionAddon.js" defer></script>
+
     <link rel="stylesheet" href="../../scripts/prosemirror-style.css">
 
 </head>
 <body>
 
-    <div prosemirror-editor="editor_1" prosemirror-theme="dark" prosemirror-available-style="bold;underline;italic;list"></div>
-    <div prosemirror-content-of="editor_1" style="display: none">
-        <h1>test</h1>
-    </div>
-
-
+    <div prosemirror-editor="editor_1" prosemirror-theme="auto" prosemirror-available-style="bold;underline;italic;list;emoji"></div>
+    <div prosemirror-content-of="editor_1"></div>
 
 </body>
 </html>

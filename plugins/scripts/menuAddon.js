@@ -33,12 +33,43 @@ function insertEmoji(type, node) {
     }
 }
 
+const themeList = []
+
+/**
+ * add a custom theme to the theme list.
+ *
+ * @param name the theme name (ex: "dark", "light)
+ * @param targetClassName the class associate to the theme.
+ */
+function addTheme(name, targetClassName){
+    themeList.push({
+        name: name,
+        className: targetClassName
+    })
+}
+
+/**
+ * apply the theme by adding the associate theme class name.
+ *
+ * @param theme the theme name to search.
+ * @param element the targeted element to apply the theme.
+ */
+function applyTheme(theme, element){
+    element.classList.add(themeList.find((savedTheme) => savedTheme.name === theme).className)
+}
+
+
+
+
+
+
+//create a schema for each editor on the page.
 for(let editor of editorsSchema){
 
     //build the menu view
     let menuBuild = buildMenuItems(editor.schema)
 
-
+    //get the style specified in the HTML.
     let styles = editor.editor.attributes['prosemirror-available-style'].value
 
     //if the specified styles include underline add it to the client menu

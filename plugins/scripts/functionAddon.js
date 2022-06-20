@@ -37,15 +37,12 @@ function translateToBBCode(htmlVersion){
     htmlVersion = htmlVersion.replaceAll(" href=\"","=")
     return htmlVersion.replaceAll("\"]", "]")
 
-
-
-
 }
 
-function applyTranslateActionTo(actionID, action, onTranslate){
+function applyTranslateActionTo(actionID, action, editor, onTranslate){
     document.getElementById(actionID).addEventListener(action, () => {
 
-        let content = document.getElementsByClassName("ProseMirror")[0];
+        let content = document.querySelector('[prosemirror-editor="'+editor+'"]').querySelector(".ProseMirror");
 
         if(content){
             onTranslate(translateToBBCode(content.innerHTML))
@@ -53,5 +50,6 @@ function applyTranslateActionTo(actionID, action, onTranslate){
 
     })
 }
+
 
 
