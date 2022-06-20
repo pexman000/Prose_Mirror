@@ -8,10 +8,9 @@ const EditorState = state.EditorState;
 const EditorView = view.EditorView;
 const {schema} = schema_basic;
 
-let availableEditor= document.querySelectorAll('[prosemirror-editor]');
+let availableEditor = document.querySelectorAll('[prosemirror-editor]');
 
 const editorsSchema = []
-
 
 for(let editor of availableEditor){
 
@@ -30,7 +29,7 @@ for(let editor of availableEditor){
 
         const styles = styleAttribute.split(';')
 
-        console.log(styles)
+        //doc, paragraph and text are require to work
         const nodes = {
 
             doc: {
@@ -69,19 +68,6 @@ for(let editor of availableEditor){
         }
 
 
-
-        if(styles.includes('code-block')) {
-            nodes.code_block= {
-                content: "text*",
-                marks: "",
-                group: "block",
-                code: true,
-                defining: true,
-                parseDOM: [{tag: "pre", preserveWhitespace: "full"}],
-                toDOM() { return ["pre", ["code", 0]] }
-            }
-        }
-
         if(styles.includes('image')) {
             nodes.image = {
                 inline: true,
@@ -103,6 +89,8 @@ for(let editor of availableEditor){
             }
         }
 
+
+
         if(styles.includes('break')){
             nodes.hard_break = {
                 inline: true,
@@ -112,6 +100,9 @@ for(let editor of availableEditor){
                 toDOM() { return ["br"]}
             }
         }
+
+
+
 
         if(styles.includes('emoji')){
             nodes.emoji= {
@@ -152,8 +143,7 @@ for(let editor of availableEditor){
             }
         }
 
-//marks = toggle the style of element without parent lost (ex: <p>test</p> -> *apply bold* -> <p><b>test</b></p>)
-
+        //marks = toggle the style of element without parent lost (ex: <p>test</p> -> *apply bold* -> <p><b>test</b></p>)
         const marks = {}
 
         if(styles.includes('bold')){
@@ -223,7 +213,63 @@ for(let editor of availableEditor){
 
 
     }else{
-        //default schema
+
+        //set as default schema if no setup
+
+
+        const nodes = {
+            doc: {
+                content: "block+"
+            },
+
+            paragraph: {
+                content: "inline*",
+                group: "block",
+                parseDOM: [{tag: "p"}],
+                toDOM() { return ["p", 0] }
+            },
+
+            text: {
+                group: "inline"
+            },
+
+            blockquote: {
+                content: "block+",
+                group: "block",
+                defining: true,
+                parseDOM: [{tag: "blockquote"}],
+                toDOM() { return  ["blockquote", 0] }
+            },
+            horizontal_rule: {
+                group: "block",
+                parseDOM:[{tag: "hr"}],
+                toDOM(){return ["hr"]}
+            },
+            code_block: {
+                content: "text*",
+                marks: "",
+                group: "block",
+                code: true,
+                defining: true,
+                parseDOM: [{tag: "pre", preserveWhitespace: "full"}],
+                toDOM() { return ["pre", ["code", 0]] }
+            },
+
+
+        }
+
+
+
+        const marks = {
+
+        }
+
+        editorSchema.schema = new Schema({
+            nodes,
+            marks})
+
+
+
     }
 
 
