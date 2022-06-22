@@ -1,7 +1,8 @@
 {
   "name": "test",
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "testEnvironment": "jsdom"
   },
   "version": "1.0.0",
   "description": "ProseMirror adapation test",

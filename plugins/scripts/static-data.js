@@ -21,3 +21,7 @@ const emojis = [
         "emoji": "🤣"
     }
 ]
+
+if(typeof module !== 'undefined'){//for test purposes
+    module.exports.emojis = emojis;
+}

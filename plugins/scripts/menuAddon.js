@@ -1,4 +1,10 @@
 /**
+ * This file contains the mains menu build functions
+ */
+
+const _emojis = (typeof module !== 'undefined')? require("./static-data").emojis : emojis;
+
+/**
  * Put mark icon in menu as active base on the original implementation
  *
  *
@@ -33,6 +39,8 @@ function insertEmoji(type, node) {
     }
 }
 
+//----------------| [START] Theme tools |-------------------
+
 const themeList = []
 
 /**
@@ -58,19 +66,18 @@ function applyTheme(theme, element){
     element.classList.add(themeList.find((savedTheme) => savedTheme.name === theme).className)
 }
 
+//----------------| [END] Theme tools |-------------------
 
 
 
+function buildMenu(ProseMirror, editor, styles){
 
-
-//create a schema for each editor on the page.
-for(let editor of editorsSchema){
+    let {MenuItem, Dropdown} = ProseMirror.menu;
+    let {buildMenuItems} = ProseMirror.example_setup;
+    let {commands} = ProseMirror;
 
     //build the menu view
     let menuBuild = buildMenuItems(editor.schema)
-
-    //get the style specified in the HTML.
-    let styles = editor.editor.attributes['prosemirror-available-style'].value
 
     //if the specified styles include underline add it to the client menu
     if(styles.includes('underline')) {
@@ -95,18 +102,18 @@ for(let editor of editorsSchema){
     }
 
 
-
     if(styles.includes('video-link')){
         let menuItem = new MenuItem({
             title: "Video",
-            label: "V",
+            label: "Video",
             class: "ProseMirror-icon",
-            run: (state) => {
-                let {$from, $to} = state.selection;
-                state.tr.replaceSelectionWith(editor.schema.nodes.video_link.create(state.selection))
-                return true
+            run: (state, view) => {
+                commands.toggleMark(editor.schema.marks.video_link)(state, view)
+                console.log(state);
             },
-
+            active: (state) => {
+                return markActive(state, editor.schema.marks.video_link)
+            }
         })
         menuBuild.inlineMenu[0].push(menuItem)
 
@@ -115,7 +122,7 @@ for(let editor of editorsSchema){
 
     if(styles.includes('emoji')){
         menuBuild.fullMenu[1].push( new Dropdown(
-            emojis.map((emoji) => new MenuItem({
+            _emojis.map((emoji) => new MenuItem({
                 label: emoji.emoji,
                 run: insertEmoji(emoji, editor.schema.spec.nodes)
             })),
@@ -124,4 +131,11 @@ for(let editor of editorsSchema){
     }
 
     editor.menu = menuBuild;
+
+}
+
+if(typeof module !== 'undefined'){//for test purposes
+    module.exports.buildMenu = buildMenu
+    module.exports.applyTheme = applyTheme
+    module.exports.addTheme = addTheme
 }

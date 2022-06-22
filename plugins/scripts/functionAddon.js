@@ -1,9 +1,13 @@
+/**
+ * This file contains all custom function
+ */
+
 
 /**
  * translate from HTML to BBCode
  *
- * @param htmlVersion
- * @returns {string}
+ * @param htmlVersion the html text to parse
+ * @returns {string} the BBCode version
  */
 function translateToBBCode(htmlVersion){
 
@@ -21,24 +25,33 @@ function translateToBBCode(htmlVersion){
         }
     }
     htmlVersion = arrayMatchBis.join("")
+    htmlVersion = htmlVersion.replaceAll(new RegExp("/ class=\".*\"", "ig"),"")
     htmlVersion = htmlVersion.replaceAll("<","[")
     htmlVersion = htmlVersion.replaceAll(">","]")
-    htmlVersion = htmlVersion.replaceAll("h1","b")
-    htmlVersion = htmlVersion.replaceAll("h2","b")
-    htmlVersion = htmlVersion.replaceAll("h3","b")
+    htmlVersion = htmlVersion.replaceAll(new RegExp("h\\d", "g"),"b")
     htmlVersion = htmlVersion.replaceAll("[a","[url")
     htmlVersion = htmlVersion.replaceAll("[/a]","[/url]")
     htmlVersion = htmlVersion.replaceAll("[p]","")
     htmlVersion = htmlVersion.replaceAll("[/p]","")
-    htmlVersion = htmlVersion.replaceAll("backquote","quote")
+    htmlVersion = htmlVersion.replaceAll("blockquote","quote")
     htmlVersion = htmlVersion.replaceAll("ul","list")
     htmlVersion = htmlVersion.replaceAll("[li]","[*]")
     htmlVersion = htmlVersion.replaceAll("[/li]","")
+    htmlVersion = htmlVersion.replaceAll("[/ol]","[/list]")
+    htmlVersion = htmlVersion.replaceAll("[ol]","[list=1]")
     htmlVersion = htmlVersion.replaceAll(" href=\"","=")
     return htmlVersion.replaceAll("\"]", "]")
 
 }
 
+/**
+ * apply a translation action to an action provider (ex: button, input, div...)
+ *
+ * @param actionID the ID the node element to interact with
+ * @param action the action to trigger (ex: "click", "change", "mouseenter",...)
+ * @param editor the editor which contain the html to parse.
+ * @param onTranslate a callback which is trigger on the parsing.
+ */
 function applyTranslateActionTo(actionID, action, editor, onTranslate){
     document.getElementById(actionID).addEventListener(action, () => {
 
@@ -52,4 +65,27 @@ function applyTranslateActionTo(actionID, action, editor, onTranslate){
 }
 
 
+function linksListener(elementToListen){
 
+    elementToListen.addEventListener('keypress', (event) => {
+
+        let pressedChar = String.fromCharCode(event.which);
+
+        if(/\s/.test(pressedChar)) {//space bar press
+
+            let linkNodeToInsert = document.createElement('a');
+            linkNodeToInsert.href = "yrdy";
+
+            elementToListen.insertAdjacentHTML(linkNodeToInsert, elementToListen.children[1])
+
+        }
+    })
+
+
+}
+
+
+
+if(typeof module !== 'undefined'){//for test purposes
+    module.exports.translateToBBCode = translateToBBCode;
+}

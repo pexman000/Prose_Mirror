@@ -8803,7 +8803,7 @@
             }))
         }
     });
-    window.PM = {
+    window.ProseMirror = {
         model: vt,
         transform: re,
         state: Ee,
@@ -8819,4 +8819,10 @@
         example_setup: Ua,
         gapcursor: oa
     }
+
 }();
+if(typeof module !== 'undefined'){//for test purposes
+    module.exports.ProseMirror = ProseMirror;
+}
+
+
